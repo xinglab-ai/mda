@@ -1,6 +1,6 @@
 # Manifold discovery and analysis
 
-This code is implementation of algorithm presented in "Revealing Hidden Patterns in Deep Neural Network Feature Space Continuum via Manifold Learning, in press, Nature Communications, 2023".
+This code implements the  manifold discovery and analysis (MDA) algorithm presented in "Revealing Hidden Patterns in Deep Neural Network Feature Space Continuum via Manifold Learning, in press, Nature Communications, 2023".
 Please run demo_MDA.ipynb for analyzing deep learning features for five different tasks. You can also run our reproducible codes in Code Ocean (https://doi.org/10.24433/CO.0076930.v1). 
 
 
