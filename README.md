@@ -3,9 +3,14 @@
 This code is implementation of algorithm presented in "Revealing Hidden Patterns in Deep Neural Network Feature Space Continuum via Manifold Learning, in press, Nature Communications, 2023".
 Please run demo_MDA.ipynb for analyzing deep learning features for five different tasks. You can also run our reproducible codes in Code Ocean (https://doi.org/10.24433/CO.0076930.v1). 
 
+
 # Required packages
 
 scikit-learn, scipy, tensorflow, umap-learn, pandas, matplotlib, jupyter, jupyterlab and mat73. The tested package versions are: jupyter (1.0.0),jupyterlab (3.6.1), mat73 (0.62), matplotlib (3.4.1), pandas (1.2.4), scikit-learn (0.24.2), scipy (1.6.1), tensorflow (2.5.1), umap-learn (0.5.3)
+
+# Data
+
+The analyzed data can be downloaded from https://drive.google.com/drive/folders/1MUvngB04qd1XU6oFV_aJwSaScj0KP2c3?usp=sharing.
 
 # Motivation
 
