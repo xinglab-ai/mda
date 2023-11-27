@@ -12,12 +12,80 @@ scikit-learn, scipy, tensorflow, umap-learn, pandas, matplotlib, jupyter, jupyte
 
 The analyzed data can be downloaded from https://drive.google.com/drive/folders/1MUvngB04qd1XU6oFV_aJwSaScj0KP2c3?usp=sharing.
 
-# Motivation
+# Example code
+## The following code shows the MDA analyses of deep neural network (DNN) features at intermediate layers for five different tasks
+```
+# For the tasks below, five datasets analysed in the manuscript will be automatically loaded. 
+# However, you can upload your own dataset, and analyze it using MDA
+# Our data were saved as .npy file to reduce the data size (normally .csv file needs more disk space). 
+# However, .csv or other type of files can also be loaded and analyzed using MDA
+```
+```
+# Load all necessary python packages needed for the reported analyses
+# in our manuscript
+import warnings
 
-Deep neural networks (DNNs) extract thousands to millions of task-specific features during model training for inference and decision-making. While visualizing these features is critical for comprehending the learning process and improving the performance of the DNNs, existing visualization techniques work only for classification tasks. For regressions, the feature points lie on a high dimensional continuum having an inherently complex shape, making a meaningful visualization of the features intractable. Given that the majority of deep learning applications are regression-oriented, developing a conceptual framework and computational method to reliably visualize the regression features is of great significance. Here, we introduce a manifold discovery and analysis (MDA) method for DNN feature visualization, which involves learning the manifold topology associated with the output and target labels of a DNN. MDA leverages the acquired topological information to preserve the local geometry of the feature space manifold and provides insightful visualizations of the DNN features, highlighting the appropriateness, generalizability, and adversarial robustness of a DNN. The performance and advantages of the MDA approach compared to the existing methods are demonstrated in different deep learning applications.
+# Disable all warnings
+warnings.filterwarnings("ignore")
 
+%matplotlib inline
 
-# Visualization and analysis of Dense-UNet features for image segmentation task:
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
+import matplotlib.pyplot as plt
+import scipy
+import scipy.io as sio
+import sklearn
+import umap
+import pandas as pd
+from umap.parametric_umap import ParametricUMAP
+import numpy as np
+from mda import *
+
+# Font size for all the MDA visualizations shown below   
+FS = 16
+```
+## Example 1 - MDA analysis of the DNN features in superresolution task
+
+### Segmentation Network
+
+In the segmentation task, we employed Dense-UNet for automatic brain tumor segmentation from MR images. The Dense-UNet combines the U-net with the dense concatenation to deepen the depth of the network architecture and achieve feature reuse. The network is formed from seven dense blocks (four in encoder and three in decoder), each of them stacks eight convolutional layers. Every two convolutional layers are linked together in a feed-forward mode to maximize feature reuse.
+
+### Dataset and feature selection
+Here, we used BraTS 2018 dataset, which provides multimodality 3D MRI images with tumor segmentation labels annotated by physicians. The dataset includes 484 cases in total, which can be divided into 210 high-grade gliomas (HGG) and 75 low-grade gliomas (LGG) cases.
+To visualize the intermediate layers of the Dense-UNet, we selected features of (a) the second convolutional layer in the third dense block, (b) the 8th convolutional layer in the fourth dense block, (c) the second convolutional layer in the 6th dense block, and (d) the last convolutional layer before the final output. In this demo, feature (d) is given as a example.
+
+```
+# Number of neighbors in MDA analyses
+neighborNum = 5
+
+# Load feature data extracted by the SRGAN at umsampling block from test images
+testDataFeatures = np.load('../data/SR/feature4_test_pca.npy')
+# Load data labels (target high resolution images) corresponding to low resolution test images
+Y = np.load('../data/SR/y_test.npy')
+# Reshape the target images into vectors so that they can be analyzed by MDA 
+Y = Y.reshape(Y.shape[0],-1)
+# Load output images prediced by the SRGAN
+Y_pred = np.load('../data/SR/y_test_pred_trained.npy')
+# Reshape the predicted output images into vectors so that they can be analyzed by MDA 
+Y_pred = Y_pred.reshape(Y_pred.shape[0],-1)
+
+# Create color map for MDA visualization from the target manifold topology
+clusterIdx = discoverManifold(Y, neighborNum)
+# Compute the outline of the output manifold
+clusterIdx_pred = discoverManifold(Y_pred, neighborNum)
+# Use the outline of the output manifold to generate the MDA visualization of the SRGAN features
+Yreg = mda(testDataFeatures,clusterIdx_pred)   
+
+# Plot the MDA results
+plt.figure(1)
+plt.scatter(Yreg[:,0],Yreg[:,1],c=clusterIdx.T, cmap='jet', s=5)
+plt.xlabel("MDA1")
+plt.ylabel("MDA2")
+plt.title('MDA visualization of the SRGAN features for superresolution task')
+```
+
+### Visualization and analysis of Dense-UNet features for image segmentation task:
 
 <img src="mda1.png">
 
