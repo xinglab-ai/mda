@@ -13,6 +13,56 @@ scikit-learn, scipy, tensorflow, umap-learn, pandas, matplotlib, jupyter, jupyte
 The analyzed data can be downloaded from https://drive.google.com/drive/folders/1MUvngB04qd1XU6oFV_aJwSaScj0KP2c3?usp=sharing.
 
 # Example code
+
+## The following code gives an example of how to extract interlayer features
+
+```python
+from tensorflow.keras.models import load_model
+from sklearn.decomposition import PCA
+import numpy as np
+import tensorflow as tf
+
+# Path to the pre-trained model
+model_path='../trained_models/model_seg.h5'
+# Load the pre-trained model
+model=load_model(model_path)
+
+# Load test data
+X_test=np.load('../MDA/data/X_test.npy')
+
+# Extract output from a specific layer ('conv2d_9') of the model
+interlayer_output=model.get_layer('conv2d_9').output
+# Create a new model that outputs the interlayer output
+inter_model = tf.keras.Model(inputs=model.input, outputs=interlayer_output)
+
+# Initialize an empty list to store outputs
+inter_out=[]
+# Loop through the test data to extract features
+for i in range(4200):
+    test_img=X_test[i]  # Get an individual test image
+    test_img=test_img[np.newaxis,:, :]  # Add an extra dimension
+    test_img=test_img/255  # Normalize the image
+    test_out=inter_model.predict(test_img)  # Predict using the intermediate model
+    test_out=np.squeeze(test_out)  # Remove single-dimensional entries
+    inter_out.append(test_out)  # Append the output to the list
+# Convert list to numpy array
+inter_out=np.array(inter_out)  
+
+# Reshape the output for PCA
+n1, h1, w1, c1 = inter_out.shape
+inter_out = inter_out.reshape(-1, h1*w1*c1)
+
+# Apply PCA for dimensionality reduction
+pca = PCA(n_components=400, svd_solver='arpack')
+inter_out = pca.fit_transform(inter_out)
+print(inter_out.shape)
+
+# Save the PCA-transformed features
+np.save('../data/Seg/feature_test.npy',inter_out)
+
+```
+
+
 ## The following code shows the MDA analyses of deep neural network (DNN) features at intermediate layers for five different tasks
 ```python
 # For the tasks below, five datasets analysed in the manuscript will be automatically loaded. 
@@ -100,25 +150,22 @@ Here, we used BraTS 2018 dataset, which provides multimodality 3D MRI images wit
 To visualize the intermediate layers of the Dense-UNet, we selected features of (a) the second convolutional layer in the third dense block, (b) the 8th convolutional layer in the fourth dense block, (c) the second convolutional layer in the 6th dense block, and (d) the last convolutional layer before the final output. In this demo, feature (d) is given as a example.
 
 ```python
-# Number of neighbors in MDA analyses
-neighborNum = 5
-
-# Load feature data extracted by the SRGAN at umsampling block from test images
-testDataFeatures = np.load('../data/SR/feature4_test_pca.npy')
-# Load data labels (target high resolution images) corresponding to low resolution test images
-Y = np.load('../data/SR/y_test.npy')
-# Reshape the target images into vectors so that they can be analyzed by MDA 
+# Load feature data extracted by the Dense-UNet from test images at the last layer before output 
+testDataFeatures = np.load('../data/Seg/feature4_test.npy')
+# Load data labels (segmented images) corresponding to input test images
+Y = np.load('../data/Seg/y_test.npy')
+# Reshape the binary images into vectors
 Y = Y.reshape(Y.shape[0],-1)
-# Load output images prediced by the SRGAN
-Y_pred = np.load('../data/SR/y_test_pred_trained.npy')
-# Reshape the predicted output images into vectors so that they can be analyzed by MDA 
+# Load output segmentation prediced by the Dense-UNet
+Y_pred = np.load('../data/Seg/y_test_pred_trained.npy')
+# Reshape the output binary images into vectors
 Y_pred = Y_pred.reshape(Y_pred.shape[0],-1)
 
-# Create color map for MDA visualization from the target manifold topology
+# Create color map for MDA visualization from the topology of the target manifold   
 clusterIdx = discoverManifold(Y, neighborNum)
 # Compute the outline of the output manifold
 clusterIdx_pred = discoverManifold(Y_pred, neighborNum)
-# Use the outline of the output manifold to generate the MDA visualization of the SRGAN features
+# Use the outline of the output manifold to generate the MDA visualization of the Dense-UNet features
 Yreg = mda(testDataFeatures,clusterIdx_pred)   
 
 # Plot the MDA results
@@ -126,7 +173,7 @@ plt.figure(1)
 plt.scatter(Yreg[:,0],Yreg[:,1],c=clusterIdx.T, cmap='jet', s=5)
 plt.xlabel("MDA1")
 plt.ylabel("MDA2")
-plt.title('MDA visualization of the SRGAN features for superresolution task')
+plt.title('MDA visualization of the Dense-UNet features for segmentation task')
 ```
 
 ### Visualization and analysis of Dense-UNet features for image segmentation task before training:
