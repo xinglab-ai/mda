@@ -29,12 +29,12 @@ import numpy as np
 import tensorflow as tf
 
 # Path to the pre-trained model
-model_path='../trained_models/model_seg.h5'
+model_path='../data/trained_models/model_seg.h5'
 # Load the pre-trained model
 model=load_model(model_path)
 
 # Load test data
-X_test=np.load('../MDA/data/X_test.npy')
+X_test=np.load('../data/trained_models/X_test_seg.npy')
 
 # Extract output from a specific layer ('conv2d_9') of the model
 interlayer_output=model.get_layer('conv2d_9').output
