@@ -17,10 +17,9 @@ The analyzed data can be downloaded from https://drive.google.com/drive/folders/
 ## The following code gives an example of how to extract interlayer features
 
 ```python
-# All trained models used in our experiments, including those for the super-resolution task,
-# segmentation task, gene expression prediction task, survival prediction task, and classification task,
-# have been uploaded to the provided data drive link. Here, we provide an example of the
-# feature extraction process for the segmentation task.
+# All trained models used in our experiments, including those for the super-resolution task, segmentation task, gene expression prediction task,
+# survival prediction task, and classification task, have been uploaded to the provided data drive link.
+# Here, we provide an example of the feature extraction process for the segmentation task.
 ```
 
 ```python
