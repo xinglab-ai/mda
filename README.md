@@ -44,7 +44,7 @@ inter_model = tf.keras.Model(inputs=model.input, outputs=interlayer_output)
 # Initialize an empty list to store outputs
 inter_out=[]
 # Loop through the test data to extract features
-for i in range(4200):
+for i in range(len(X_test)):
     test_img=X_test[i]  # Get an individual test image
     test_img=test_img[np.newaxis,:, :]  # Add an extra dimension
     test_img=test_img/255  # Normalize the image
