@@ -14,13 +14,13 @@ The analyzed data can be downloaded from https://drive.google.com/drive/folders/
 
 # Example code
 ## The following code shows the MDA analyses of deep neural network (DNN) features at intermediate layers for five different tasks
-```
+```python
 # For the tasks below, five datasets analysed in the manuscript will be automatically loaded. 
 # However, you can upload your own dataset, and analyze it using MDA
 # Our data were saved as .npy file to reduce the data size (normally .csv file needs more disk space). 
 # However, .csv or other type of files can also be loaded and analyzed using MDA
 ```
-```jc
+```python
 # Load all necessary python packages needed for the reported analyses
 # in our manuscript
 import warnings
@@ -53,7 +53,7 @@ In the superresolution task, we employed the super resolution generative adversa
 ### Dataset and feature selection
 We adopted ISIC-2019 dataset, which consists of a total of 25,331 dermoscopic images, including 4522 melanoma, 12,875 melanocytic nevus, 3323 basal cell carcinoma, 867 actinic keratosis, 2624 benign keratosis, 239 dermatofibroma, 253 vascular lesion, and 628 squamous cell carcinoma cases.
 To visualize the intermediate layers of the SRGAN, we selected features of (a) output of the first residual block, (b) output of the third residual block, (c) output of the fourth residual block, and (d) output of the upsampling block in the generator. In this demo, feature (d) is given as a example.
-```jc
+```python
 # Number of neighbors in MDA analyses
 neighborNum = 5
 
@@ -99,7 +99,7 @@ In the segmentation task, we employed Dense-UNet for automatic brain tumor segme
 Here, we used BraTS 2018 dataset, which provides multimodality 3D MRI images with tumor segmentation labels annotated by physicians. The dataset includes 484 cases in total, which can be divided into 210 high-grade gliomas (HGG) and 75 low-grade gliomas (LGG) cases.
 To visualize the intermediate layers of the Dense-UNet, we selected features of (a) the second convolutional layer in the third dense block, (b) the 8th convolutional layer in the fourth dense block, (c) the second convolutional layer in the 6th dense block, and (d) the last convolutional layer before the final output. In this demo, feature (d) is given as a example.
 
-```jc
+```python
 # Number of neighbors in MDA analyses
 neighborNum = 5
 
@@ -155,7 +155,7 @@ In the survival prediction task, we established an MLP model to predict the surv
 A public dataset called Cancer Genome Atlas (TCGA) is employed, which provides gene expression (normalized RNA-seq) and patient survival data for 10,956 tumors from 33 cancer types. Before training, data preprocessing was conducted. We first selected the cases where the information “days to death” is applicable, then standardize the survival days to 0-1 by dividing by the maximum value, finally save the corresponding gene expression value of each case and process the data by z-score normalization. After preprocessing, the applicable data includes 2,892 cases, each containing the normalized expression value of 20,531 genes and standardized survival day.
 To visualize the intermediate layers of the survival prediction network, we selected features of (a) the second layers of the third fully connected blocks, (b) the second layers of the fourth fully connected blocks, (c) the second layers of the fifth fully connected blocks, and (d) the second layers of the sixth fully connected blocks. In this demo, feature (d) is given as a example.
 
-```jc
+```python
 # Load feature data extracted by the MLP from test data at the 2nd layer of the 6th fully connected block
 testDataFeatures = np.load('../data/SP/feature4_test.npy')
 # Load data labels (survival days) corresponding to input test genomics data
@@ -204,7 +204,7 @@ In the gene expression task, we established a gene expression prediction network
 The LINCS L1000 project has collected gene expression profiles for thousands of perturbagens at a variety of time points, doses, and cell lines. Here, we selected Level 3 of the L1000 project, which includes quantile-normalized gene expression profiles of 978 landmark genes, to build up our training and testing set.
 To visualize the intermediate layers of the gene expression prediction network, we selected features of (a) the first MLP layer, (b) the second MLP layer, (c) the third MLP layer, and (d) the fourth MLP layer. In this demo, feature (d) is given as a example.
 
-```jc
+```python
 # Load feature data extracted by the MLP from test data at the 4th layer
 testDataFeatures = np.load('../data/GP/feature4_test.npy')
 # Load data labels (gene expressions) corresponding to input test gene expression data
@@ -253,7 +253,7 @@ In the classification task, we utilized the ResNet50 model to classify the lung 
 The COVID-19 radiography dataset contains 21,165 X-ray images in total, including 3616 COVID-19 positive cases along with 10,192 normal, 6012 lung opacity (non-COVID lung infection), and 1345 viral pneumonia cases.
 To visualize the intermediate layers of the ResNet50, we selected features of (a) output of the 4th residual block’s last convolutional layer in substructure2, (b) output of the 2nd residual block’s last convolutional layer in substructure3, (c) output of the 6th residual block’s last convolutional layer in substructure3, and (d) output of the 3rd residual block’s last convolutional layer in substructure4. In this demo, feature (d) is given as a example.
 
-```jc
+```python
 # Load feature data extracted by the ResNet50 from test x-ray images at the 3rd residual block's last convolutional
 # layer in substructure 4.
 testDataFeatures = np.load('../data/CL/feature4_test.npy')
@@ -281,10 +281,10 @@ plt.title('MDA visualization of the ResNet50 features for classification task')
 
 ![cl1](https://github.com/xinglab-ai/mda/assets/26252653/e16fec6c-1c47-4a85-bcb4-b06c933f9c12)
 
-Figure 6.Visualization of DNN features before network training by (a) t-SNE, (b) UMAP, and (c) MDA for COVID-19 data classification.
+Figure 8.Visualization of DNN features before network training by (a) t-SNE, (b) UMAP, and (c) MDA for COVID-19 data classification.
 
 
 ![cl2](https://github.com/xinglab-ai/mda/assets/26252653/ee52b56e-ed4e-4c0b-8d63-69e0658e70af)
 
-Figure 7.Investigation of the feature space of ResNet50 network applied on a public COVID-19 dataset for classification into four categories. (a, b, c) t-SNE, UMAP, and MDA visualizations of the feature spaces at four different layers before/after training. Here, S2-B4-L3 denotes the 4th residual block’s last convolutional layer in substructure 2, S3-B2-L3 denotes the 2nd residual block’s last convolutional layer in substructure 3, S3-B6-L3 denotes the 6th residual block’s last convolutional layer in substructure 3, and S4-B3-L3 denotes the 3rd residual block’s last convolutional layer in substructure 4. Before training, the data points are randomly distributed in MDA visualizations. However, after the training, the feature space becomes well clustered in MDA visualizations, especially in deeper layers. t-SNE and UMAP fail to show any information about the training status of the network. (d) k-nearest neighbor classification accuracy of the low dimensional representations from different techniques.
+Figure 9.Investigation of the feature space of ResNet50 network applied on a public COVID-19 dataset for classification into four categories. (a, b, c) t-SNE, UMAP, and MDA visualizations of the feature spaces at four different layers before/after training. Here, S2-B4-L3 denotes the 4th residual block’s last convolutional layer in substructure 2, S3-B2-L3 denotes the 2nd residual block’s last convolutional layer in substructure 3, S3-B6-L3 denotes the 6th residual block’s last convolutional layer in substructure 3, and S4-B3-L3 denotes the 3rd residual block’s last convolutional layer in substructure 4. Before training, the data points are randomly distributed in MDA visualizations. However, after the training, the feature space becomes well clustered in MDA visualizations, especially in deeper layers. t-SNE and UMAP fail to show any information about the training status of the network. (d) k-nearest neighbor classification accuracy of the low dimensional representations from different techniques.
 
