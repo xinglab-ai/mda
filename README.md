@@ -5,8 +5,8 @@ Please run demo_MDA.ipynb for analyzing deep learning features for five differen
 
 # Citation
 
-Md Tauhidul Islam, Zixia Zhou, Hongyi Ren1, Masoud Badiei Khuzani,
-Daniel Kapp, James Zou, Lu Tian, Joseph C. Liao and Lei Xing. 2023, "Revealing Hidden Patterns in Deep Neural Network Feature Space Continuum via Manifold Learning", in press, \emph{Nature Communications}.
+Md Tauhidul Islam, Zixia Zhou, Hongyi Ren, Masoud Badiei Khuzani,
+Daniel Kapp, James Zou, Lu Tian, Joseph C. Liao and Lei Xing. 2023, "Revealing Hidden Patterns in Deep Neural Network Feature Space Continuum via Manifold Learning", in press, Nature Communications.
 
 # Installation
 The easiest way to start with MDA is to install it using PyPI.
