@@ -28,10 +28,11 @@ The analyzed data can be downloaded from https://drive.google.com/drive/folders/
 ## The following code gives an example of how to extract interlayer features
 
 ```python
-# All trained models used in our experiments, including those for the super-resolution task, segmentation task, gene expression prediction task,
-# survival prediction task, and classification task, have been uploaded to the provided data drive link (MDA_Datasets/data/Trained Models/...).
-# Here, we provide an example of the feature extraction process from Tensorflow models for the segmentation task. For PyTorch models, the
-# process is demonstrated in example_pytorch_feature_extraction.py.
+# All trained models used in our experiments, including those for the super-resolution task, segmentation task,
+# gene expression prediction task, survival prediction task, and classification task, have been uploaded to
+# the provided data drive link (MDA_Datasets/data/Trained Models/...).
+# Here, we provide an example of the feature extraction process from Tensorflow models for the segmentation task.
+# For PyTorch models, the feature extraction process is demonstrated in example_pytorch_feature_extraction.py.
 ```
 
 ```python
