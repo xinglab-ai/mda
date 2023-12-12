@@ -3,6 +3,12 @@
 This code implements the  manifold discovery and analysis (MDA) algorithm presented in "Revealing Hidden Patterns in Deep Neural Network Feature Space Continuum via Manifold Learning, in press, Nature Communications, 2023".
 Please run demo_MDA.ipynb for analyzing deep learning features for five different tasks (medical image segmentation and superresolution, gene expression prediction, survival prediction, and COVID-19 x-ray image classification). You can also run our reproducible codes in Code Ocean (https://doi.org/10.24433/CO.0076930.v1). 
 
+# Citation
+
+Md Tauhidul Islam, Zixia Zhou, Hongyi Ren1, Masoud Badiei Khuzani,
+Daniel Kapp, James Zou, Lu Tian, Joseph C. Liao and Lei Xing. 2023, "Revealing Hidden Patterns in Deep Neural Network Feature Space Continuum via Manifold Learning", in press, \emph{Nature Communications}.
+
+# Installation
 The easiest way to start with MDA is to install it using PyPI.
 
 ```python
@@ -24,7 +30,8 @@ The analyzed data can be downloaded from https://drive.google.com/drive/folders/
 ```python
 # All trained models used in our experiments, including those for the super-resolution task, segmentation task, gene expression prediction task,
 # survival prediction task, and classification task, have been uploaded to the provided data drive link (MDA_Datasets/data/Trained Models/...).
-# Here, we provide an example of the feature extraction process for the segmentation task.
+# Here, we provide an example of the feature extraction process from Tensorflow models for the segmentation task. For PyTorch models, the
+# process is demonstrated in example_pytorch_feature_extraction.py.
 ```
 
 ```python
